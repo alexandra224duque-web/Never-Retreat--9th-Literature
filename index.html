@@ -39,6 +39,7 @@
             cursor: text;
         }
 
+        /* Target Words (Blue) */
         .word-trigger {
             color: #1d4ed8; /* blue-700 */
             font-weight: 700;
@@ -324,7 +325,7 @@
             );
         };
 
-        // 2. READING TAB (Refactored for Highlighting)
+        // 2. READING TAB (Refactored for API Lookup + Highlighting)
         
         // Helper to generate HTML for clickable words
         const createWord = (text, def, synonym) => {
@@ -380,12 +381,69 @@
 
         const ReadingTab = () => {
             const [highlightMode, setHighlightMode] = useState(false);
-            const [popup, setPopup] = useState(null); // { x, y, word, def, syn }
+            const [popup, setPopup] = useState(null); // { x, y, word, def, syn, loading, error }
             const textContainerRef = useRef(null);
 
-            // Handle Definition Clicks (Delegation)
+            // 1. Identify Word Logic
+            const getWordAtPosition = (e) => {
+                let range, textNode, offset;
+
+                if (document.caretRangeFromPoint) {
+                    // Standard / Webkit
+                    range = document.caretRangeFromPoint(e.clientX, e.clientY);
+                    textNode = range.startContainer;
+                    offset = range.startOffset;
+                } else if (document.caretPositionFromPoint) {
+                    // Firefox standard
+                    const pos = document.caretPositionFromPoint(e.clientX, e.clientY);
+                    textNode = pos.offsetNode;
+                    offset = pos.offset;
+                } else {
+                    return null;
+                }
+
+                // Ensure we clicked on text
+                if (textNode.nodeType !== Node.TEXT_NODE) return null;
+
+                const text = textNode.textContent;
+                
+                // Expand from offset to find word boundaries
+                let start = offset;
+                while (start > 0 && /\w/.test(text[start - 1])) start--;
+                let end = offset;
+                while (end < text.length && /\w/.test(text[end])) end++;
+
+                const word = text.slice(start, end);
+                // Basic validation: must contain letters
+                if (/\w+/.test(word)) return word;
+                return null;
+            };
+
+            const fetchDefinition = async (word, x, y) => {
+                setPopup({ x, y, word, loading: true });
+                try {
+                    const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+                    if (!res.ok) throw new Error("Not found");
+                    const data = await res.json();
+                    
+                    // Extract first valid meaning
+                    const meaning = data[0]?.meanings[0];
+                    const def = meaning?.definitions[0]?.definition || "Definition not available.";
+                    const syn = meaning?.synonyms?.[0] || meaning?.definitions[0]?.synonyms?.[0] || "No synonym found";
+
+                    setPopup({ x, y, word: data[0].word, def, syn, loading: false });
+                } catch (err) {
+                    setPopup({ x, y, word, def: "Definition not available.", syn: "-", loading: false, error: true });
+                }
+            };
+
+            // 2. Click Handler
             const handleContainerClick = (e) => {
-                // If clicking a word trigger
+                // Ignore if highlighting mode is ON and user is dragging
+                const selection = window.getSelection();
+                if (highlightMode && selection.toString().length > 0) return;
+
+                // A. Check for TARGET WORD (Blue)
                 const trigger = e.target.closest('.word-trigger');
                 if (trigger) {
                     const rect = trigger.getBoundingClientRect();
@@ -394,34 +452,38 @@
                         y: rect.top,
                         word: trigger.dataset.word,
                         def: trigger.dataset.def,
-                        syn: trigger.dataset.syn
+                        syn: trigger.dataset.syn,
+                        loading: false
                     });
                     e.stopPropagation();
                     return;
                 }
                 
-                // Close popup if clicking elsewhere
+                // B. Check for REGULAR WORD (API)
+                const word = getWordAtPosition(e);
+                if (word) {
+                    // Calculate roughly where the click happened for popup positioning
+                    // (Using clientX/Y from event is easiest for "point" clicks)
+                    fetchDefinition(word, e.clientX, e.clientY);
+                    e.stopPropagation();
+                    return;
+                }
+
+                // C. Clicked empty space -> Close
                 setPopup(null);
             };
 
-            // Handle Highlighting Logic
             const handleMouseUp = () => {
                 if (!highlightMode) return;
-
                 const selection = window.getSelection();
                 if (selection && selection.toString().length > 0) {
-                    // Use document.execCommand to handle complex overlapping tags safely
-                    // This works because the container is contentEditable
                     document.execCommand("hiliteColor", false, "#fef08a"); // yellow-200
-                    
-                    // Clear selection after highlighting
                     selection.removeAllRanges();
                 }
             };
 
             const clearHighlights = () => {
                 if (window.confirm("Remove all highlights?")) {
-                    // Reset content
                      if (textContainerRef.current) {
                         textContainerRef.current.innerHTML = READING_CONTENT_HTML;
                      }
@@ -479,14 +541,25 @@
                                     transform: 'translate(-50%, -100%)'
                                 }}
                             >
-                                <p className="font-bold mb-1 text-blue-300 text-lg">{popup.word}</p>
-                                <p className="mb-2 text-slate-200">{popup.def}</p>
-                                <div className="pt-2 border-t border-slate-700">
-                                    <span className="text-xs text-slate-400 italic uppercase mr-2">Synonym:</span>
-                                    <span className="text-yellow-200 font-medium">{popup.syn}</span>
+                                <div className="flex justify-between items-start mb-2">
+                                    <p className="font-bold text-blue-300 text-lg capitalize">{popup.word}</p>
+                                    <button onClick={(e) => { e.stopPropagation(); setPopup(null); }} className="text-slate-400 hover:text-white text-lg leading-none ml-2">×</button>
                                 </div>
+                                
+                                {popup.loading ? (
+                                    <div className="text-slate-400 italic">Loading definition...</div>
+                                ) : (
+                                    <>
+                                        <p className="mb-2 text-slate-200">{popup.def}</p>
+                                        {!popup.error && (
+                                            <div className="pt-2 border-t border-slate-700">
+                                                <span className="text-xs text-slate-400 italic uppercase mr-2">Synonym:</span>
+                                                <span className="text-yellow-200 font-medium">{popup.syn}</span>
+                                            </div>
+                                        )}
+                                    </>
+                                )}
                                 <div className="popover-arrow"></div>
-                                <button onClick={(e) => { e.stopPropagation(); setPopup(null); }} className="absolute top-1 right-2 text-slate-400 hover:text-white text-lg leading-none">×</button>
                             </div>
                         )}
                     </div>
