@@ -186,18 +186,67 @@
                 explanation: "This quote supports the idea that our lifestyle relies on energy and we are attached to that convenience."
             },
             {
-                id: "q3",
+                id: "q3_adapt",
+                type: "checkbox",
+                text: "Select TWO pieces of evidence that support the claim that humans are adaptable.",
+                options: [
+                    { id: "A", text: "People growing more of their own food (Paragraph 9)" },
+                    { id: "B", text: "A single power outage affects millions (Paragraph 10)" },
+                    { id: "C", text: "Life used to be much more decentralized (Paragraph 11)" },
+                    { id: "D", text: "We evolved during times so challenging others died out (Paragraph 13)" },
+                    { id: "E", text: "Use of mass transit goes up when gas prices rise (Paragraph 14)" }
+                ],
+                correct: ["D", "E"],
+                explanation: "Paragraph 13 mentions human evolution during challenging times, and Paragraph 14 gives examples of adjusting behavior when prices rise."
+            },
+            {
+                id: "q4_pov",
                 type: "text",
-                text: "In paragraph 4, the author compares our dependence on convenience to an addiction. Why does he use this comparison?",
+                text: "ANALYZE: Is the author presenting an objective point of view or a subjective point of view? Explain your answer.",
+                correctKeywords: ["subjective", "opinion", "persuasive", "view", "objective"],
+                explanation: "The author presents a subjective point of view. He uses strong language ('addictive', 'painful') to argue his opinion that we must change our lifestyle."
+            },
+            {
+                id: "q5_eval",
+                type: "text",
+                text: "EVALUATE: Reread paragraphs 1–2. Summarize the author’s claim about whether inventions are created to meet current needs.",
+                correctKeywords: ["curiosity", "invention", "need", "create", "necessity"],
+                explanation: "The author claims inventions often come from curiosity first, and we find needs for them later (e.g., 'Necessity is said to be the mother of invention, but the reverse is also true')."
+            },
+            {
+                id: "q6_addiction",
+                type: "text",
+                text: "COMPARE: In paragraph 4, the author compares our dependence on convenience to an addiction. Why does he use this comparison?",
                 correctKeywords: ["addict", "habit", "stop", "difficult", "hard"],
                 explanation: "He compares it to addiction (using words like 'dosage') to show that it is extremely difficult for people to stop using energy, even if they know they should."
             },
             {
-                id: "q4",
+                id: "q7_systems",
+                type: "text",
+                text: "ANALYZE: In paragraph 10, what is the author’s subjective point of view on integrated systems?",
+                correctKeywords: ["brittle", "weak", "connected", "problem", "efficient"],
+                explanation: "He views them as 'efficient' but 'brittle' (weak). He believes being too connected makes us vulnerable to disasters like power outages or economic collapse."
+            },
+             {
+                id: "q8_infer",
+                type: "text",
+                text: "INFER: What does the author assume readers already know before reading his argument?",
+                correctKeywords: ["fossil", "fuel", "energy", "warming", "climate", "environment"],
+                explanation: "He assumes readers know what fossil fuels are, that we depend on them heavily, and that there is an 'environmental crunch' (climate change) happening."
+            },
+            {
+                id: "q9_difficulty",
                 type: "text",
                 text: "EVALUATE: What does the author say is the main difficulty in ending our dependence on fossil fuels? (Cite evidence)",
                 correctKeywords: ["lifestyle", "standard", "living", "comfort", "convenience"],
                 explanation: "The main difficulty is that people do not want to lower their standard of living. The text says resistance to a 'downshift in lifestyle is strong'."
+            },
+            {
+                id: "q10_synthesis",
+                type: "text",
+                text: "SYNTHESIZE: How did reading this affect your thinking about conserving energy? (Write about what you thought before vs. now).",
+                correctKeywords: ["thought", "change", "learned", "energy", "think"],
+                explanation: "Personal Reflection: Students should reflect on their personal perspective change regarding energy consumption and the 'lifestyle ladder'."
             }
         ];
 
@@ -326,8 +375,6 @@
         };
 
         // 2. READING TAB (Refactored for API Lookup + Highlighting)
-        
-        // Helper to generate HTML for clickable words
         const createWord = (text, def, synonym) => {
             return `<span class="word-trigger" data-def="${def}" data-syn="${synonym}" data-word="${text}">${text}</span>`;
         };
@@ -381,20 +428,17 @@
 
         const ReadingTab = () => {
             const [highlightMode, setHighlightMode] = useState(false);
-            const [popup, setPopup] = useState(null); // { x, y, word, def, syn, loading, error }
+            const [popup, setPopup] = useState(null); 
             const textContainerRef = useRef(null);
 
-            // 1. Identify Word Logic
             const getWordAtPosition = (e) => {
                 let range, textNode, offset;
 
                 if (document.caretRangeFromPoint) {
-                    // Standard / Webkit
                     range = document.caretRangeFromPoint(e.clientX, e.clientY);
                     textNode = range.startContainer;
                     offset = range.startOffset;
                 } else if (document.caretPositionFromPoint) {
-                    // Firefox standard
                     const pos = document.caretPositionFromPoint(e.clientX, e.clientY);
                     textNode = pos.offsetNode;
                     offset = pos.offset;
@@ -402,19 +446,15 @@
                     return null;
                 }
 
-                // Ensure we clicked on text
                 if (textNode.nodeType !== Node.TEXT_NODE) return null;
 
                 const text = textNode.textContent;
-                
-                // Expand from offset to find word boundaries
                 let start = offset;
                 while (start > 0 && /\w/.test(text[start - 1])) start--;
                 let end = offset;
                 while (end < text.length && /\w/.test(text[end])) end++;
 
                 const word = text.slice(start, end);
-                // Basic validation: must contain letters
                 if (/\w+/.test(word)) return word;
                 return null;
             };
@@ -426,7 +466,6 @@
                     if (!res.ok) throw new Error("Not found");
                     const data = await res.json();
                     
-                    // Extract first valid meaning
                     const meaning = data[0]?.meanings[0];
                     const def = meaning?.definitions[0]?.definition || "Definition not available.";
                     const syn = meaning?.synonyms?.[0] || meaning?.definitions[0]?.synonyms?.[0] || "No synonym found";
@@ -437,13 +476,10 @@
                 }
             };
 
-            // 2. Click Handler
             const handleContainerClick = (e) => {
-                // Ignore if highlighting mode is ON and user is dragging
                 const selection = window.getSelection();
                 if (highlightMode && selection.toString().length > 0) return;
 
-                // A. Check for TARGET WORD (Blue)
                 const trigger = e.target.closest('.word-trigger');
                 if (trigger) {
                     const rect = trigger.getBoundingClientRect();
@@ -459,17 +495,13 @@
                     return;
                 }
                 
-                // B. Check for REGULAR WORD (API)
                 const word = getWordAtPosition(e);
                 if (word) {
-                    // Calculate roughly where the click happened for popup positioning
-                    // (Using clientX/Y from event is easiest for "point" clicks)
                     fetchDefinition(word, e.clientX, e.clientY);
                     e.stopPropagation();
                     return;
                 }
 
-                // C. Clicked empty space -> Close
                 setPopup(null);
             };
 
@@ -477,7 +509,7 @@
                 if (!highlightMode) return;
                 const selection = window.getSelection();
                 if (selection && selection.toString().length > 0) {
-                    document.execCommand("hiliteColor", false, "#fef08a"); // yellow-200
+                    document.execCommand("hiliteColor", false, "#fef08a");
                     selection.removeAllRanges();
                 }
             };
@@ -492,7 +524,6 @@
 
             return (
                 <div className="max-w-3xl mx-auto pb-24 text-lg leading-relaxed text-slate-700 relative">
-                    {/* Toolbar */}
                     <div className="sticky top-0 z-20 bg-white/90 backdrop-blur border-b border-slate-200 p-2 mb-4 rounded-lg shadow-sm flex items-center justify-between gap-2">
                         <div className="flex items-center gap-2">
                             <span className="text-sm font-bold text-slate-500 uppercase tracking-wide mr-2">Tools:</span>
@@ -518,7 +549,6 @@
                         <h1 className="text-3xl font-bold text-slate-900 mb-2">Never Retreat</h1>
                         <p className="text-slate-500 mb-8 font-serif italic">From Eyes Wide Open • Argument by Paul Fleischman</p>
                         
-                        {/* Text Container */}
                         <div 
                             ref={textContainerRef}
                             className={`outline-none ${highlightMode ? 'allow-select' : ''}`}
@@ -526,12 +556,11 @@
                             suppressContentEditableWarning={true}
                             onMouseUp={handleMouseUp}
                             onClick={handleContainerClick}
-                            onKeyDown={(e) => e.preventDefault()} // Read-only
-                            onPaste={(e) => e.preventDefault()} // No pasting
+                            onKeyDown={(e) => e.preventDefault()}
+                            onPaste={(e) => e.preventDefault()}
                             dangerouslySetInnerHTML={{ __html: READING_CONTENT_HTML }}
                         ></div>
 
-                        {/* Definition Popover */}
                         {popup && (
                             <div 
                                 className="fixed z-50 bg-slate-800 text-white text-sm p-4 rounded-lg shadow-xl animate-fade-in w-64 pointer-events-auto"
@@ -589,7 +618,7 @@
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
                 const width = 800;
-                let height = 300 + (QUIZ_QUESTIONS.length * 250); 
+                let height = 300 + (QUIZ_QUESTIONS.length * 350); 
                 canvas.width = width;
                 canvas.height = height;
 
@@ -635,9 +664,25 @@
                 }
 
                 QUIZ_QUESTIONS.forEach((q, index) => {
-                    const studentAns = answers[q.id] || "No Answer";
-                    const isCorrect = q.type === 'mcq' ? studentAns === q.correct : "Manual Review";
-                    
+                    const studentAnsRaw = answers[q.id];
+                    let studentAns = "No Answer";
+                    let isCorrect = false;
+
+                    // Handle different answer types for the Report
+                    if (q.type === 'mcq') {
+                        studentAns = studentAnsRaw || "No Answer";
+                        isCorrect = studentAns === q.correct;
+                    } else if (q.type === 'checkbox') {
+                         const selected = (studentAnsRaw || []).sort().join(", ");
+                         studentAns = selected || "No Answer";
+                         const correctStr = q.correct.sort().join(", ");
+                         isCorrect = selected === correctStr;
+                    } else {
+                        studentAns = studentAnsRaw || "No Answer";
+                        isCorrect = "Manual Review";
+                    }
+
+                    // Question Header
                     ctx.fillStyle = "#f1f5f9"; // Slate-100
                     ctx.fillRect(40, y, width - 80, 40);
                     ctx.fillStyle = "#334155";
@@ -645,27 +690,32 @@
                     ctx.fillText(`Q${index + 1}: ${q.type.toUpperCase()}`, 50, y + 26);
                     y += 60;
 
+                    // Question Text
                     ctx.fillStyle = "#000000";
                     ctx.font = "16px Arial";
                     y = wrapText(q.text, 40, y, 720, 24);
                     y += 10;
 
+                    // Answer Status
                     ctx.font = "bold 16px Arial";
-                    if (q.type === 'mcq') {
-                        ctx.fillStyle = isCorrect ? "#16a34a" : "#dc2626"; 
-                        ctx.fillText(`Your Answer: ${studentAns} ${isCorrect ? '(Correct)' : '(Incorrect)'}`, 40, y);
+                    if (isCorrect === "Manual Review") {
+                         ctx.fillStyle = "#2563eb"; // Blue
+                         ctx.fillText("Your Response:", 40, y);
+                         y += 25;
+                         ctx.font = "italic 16px Arial";
+                         y = wrapText(studentAns, 40, y, 720, 24);
                     } else {
-                        ctx.fillStyle = "#2563eb"; 
-                        ctx.fillText(`Your Answer:`, 40, y);
-                        y += 25;
-                        ctx.font = "italic 16px Arial";
-                        y = wrapText(studentAns, 40, y, 720, 24);
+                        ctx.fillStyle = isCorrect ? "#16a34a" : "#dc2626"; // Green or Red
+                        const status = isCorrect ? "(Correct)" : "(Incorrect)";
+                        const ansText = `Your Answer: ${studentAns} ${status}`;
+                        y = wrapText(ansText, 40, y, 720, 24);
                     }
                     y += 30;
 
+                    // Feedback
                     ctx.fillStyle = "#475569";
                     ctx.font = "14px Arial";
-                    ctx.fillText("Feedback / Correct Answer:", 40, y);
+                    ctx.fillText("Feedback / Key:", 40, y);
                     y += 20;
                     y = wrapText(q.explanation, 40, y, 720, 20);
                     
@@ -713,7 +763,7 @@
                                 <span className="text-xs font-bold text-slate-400 uppercase">Question {idx + 1}</span>
                                 <p className="font-bold text-slate-800 text-lg mb-4">{q.text}</p>
                                 
-                                {q.type === 'mcq' ? (
+                                {q.type === 'mcq' && (
                                     <div className="space-y-2">
                                         {q.options.map(opt => (
                                             <label key={opt.id} className="flex items-start gap-3 p-3 rounded hover:bg-slate-50 border border-transparent hover:border-slate-200 cursor-pointer">
@@ -729,7 +779,34 @@
                                             </label>
                                         ))}
                                     </div>
-                                ) : (
+                                )}
+                                
+                                {q.type === 'checkbox' && (
+                                    <div className="space-y-2">
+                                        {q.options.map(opt => (
+                                            <label key={opt.id} className="flex items-start gap-3 p-3 rounded hover:bg-slate-50 border border-transparent hover:border-slate-200 cursor-pointer">
+                                                <input 
+                                                    type="checkbox" 
+                                                    name={q.id} 
+                                                    value={opt.id}
+                                                    checked={(answers[q.id] || []).includes(opt.id)}
+                                                    onChange={(e) => {
+                                                        const current = answers[q.id] || [];
+                                                        let next;
+                                                        if (e.target.checked) next = [...current, opt.id];
+                                                        else next = current.filter(x => x !== opt.id);
+                                                        handleChange(q.id, next);
+                                                    }}
+                                                    className="mt-1"
+                                                />
+                                                <span className="text-slate-700">{opt.text}</span>
+                                            </label>
+                                        ))}
+                                        <p className="text-xs text-slate-500 mt-2 font-semibold">Please select {q.correct.length} options.</p>
+                                    </div>
+                                )}
+
+                                {q.type === 'text' && (
                                     <textarea 
                                         className="w-full border rounded p-3 text-slate-700 h-32 focus:ring-2 focus:ring-blue-500 outline-none"
                                         placeholder="Type your answer here..."
