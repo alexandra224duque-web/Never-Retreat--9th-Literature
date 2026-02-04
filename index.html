@@ -264,22 +264,85 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
         );
 
+         // Helper to generate HTML for clickable words
+        const createWord = (text, def, synonym) => {
+            return `<span class="word-trigger" data-def="${def}" data-syn="${synonym}" data-word="${text}">${text}</span>`;
+        };
+
+        const READING_CONTENT_HTML = `
+            <div class="mb-4">
+                <span class="font-bold text-slate-400 mr-2">1</span>
+                Our dependence on fossil fuels didn’t arise from an evil plot but through our curiosity and ${createWord("ingenuity", "cleverness in solving problems", "creativity")}. Coal was seen only as a heat source until we found it could power steam engines. Later we discovered that the gas it gave off when heated could light homes and streets. Gasoline was considered a useless by-product of petroleum—and then came the internal ${createWord("combustion", "burning to create energy", "burning")} engine.
+            </div>
+            <div class="mb-4">
+                <span class="font-bold text-slate-400 mr-2">2</span>
+                Necessity is said to be the mother of invention, but the reverse is also true. We tinker and probe, then see if our discovery fills any need, including needs we didn’t know we had.
+            </div>
+            <div class="mb-4">
+                <span class="font-bold text-slate-400 mr-2">3</span>
+                With fossil fuels, new uses multiplied madly until we wove them into every corner of our lives. What used to be luxuries—garage-door openers, dishwashers, cell phones—came to feel like necessities. It’s easy to go up the lifestyle ladder but painful climbing down. This is important.
+            </div>
+            <div class="mb-4">
+                <span class="font-bold text-slate-400 mr-2">4</span>
+                It’s not hard to understand. The ${createWord("windfall", "unexpected large benefit", "lucky bonus")} of cheap fossil fuels that’s fueled the West for two centuries got us used to ever-rising living standards. Energy buys convenience. And convenience is addictive—highly so. Each increased dosage quickly becomes our new minimum requirement. You see this whenever gas prices rise and endanger our freedom to drive as much as we want—causing politicians to leap into action on our behalf. They know that whatever level of comfort we’re at feels like a must.
+            </div>
+            <div class="mb-4">
+                <span class="font-bold text-slate-400 mr-2">5</span>
+                To escape from the environmental crunch, we don’t need to throw out our entire lifestyle but simply to power it on something other than fossil fuels. We’re on the way. Switching to renewables for electricity is probably the easy part. Harder will be getting oil out of transportation and agriculture and the military, as well as all the products it’s currently in: the asphalt in your street, the carpet on your floor, the clothes in your closet, and all the plastic around you in furniture, appliances, cars, and packaging. Can we run this film in reverse? Only once have we replaced an energy source so central to our economy and lifestyle: when slave labor was abolished, a change so jarring that its threat brought on war.
+            </div>
+            <div class="mb-4">
+                <span class="font-bold text-slate-400 mr-2">6</span>
+                When our standard of living is threatened by ${createWord("scarcity", "not having enough resources", "shortage")} and side effects, you’d think we’d cut back. Instead, the common response is to maintain it at any cost. Bluefin tuna is in steep decline, but the tuna-loving Japanese are catching all they can. We know our freshwater ${createWord("aquifers", "underground water sources", "groundwater")} are limited, but we’re draining them faster rather than slower. Scarcity was humankind’s enemy for so long that resistance to a downshift in lifestyle is strong. At the first international climate summit in 1992, the U.S. delegation’s attitude was that America’s standard of living wasn’t up for negotiation. Every U.S. administration since then has followed the same path.
+            </div>
+            <div class="mb-4">
+                <span class="font-bold text-slate-400 mr-2">7</span>
+                Developing countries feel the same. People getting their first paved roads, safe water, electric lights, and refrigerators don’t want to march backward any more than the West does.
+            </div>
+            <div class="mb-4">
+                <span class="font-bold text-slate-400 mr-2">8</span>
+                Using less energy and consuming less—taking a step down the ladder—would make the West’s transition to renewables that much easier. What would happen if we cut the amount of stuff we bought in half? We’d save hugely on resources as well as on the energy needed to make them into products. We’d also lose large numbers of jobs. To keep employment up, we need people to keep buying bacon-flavored dental floss and Elvis Presley mouse pads and other nonessentials. The call “Never retreat” comes from us both as consumers and breadwinners.
+            </div>
+            <div class="mb-4">
+                <span class="font-bold text-slate-400 mr-2">9</span>
+                Many have sketched a sustainable economy that doesn’t rest on unnecessary consumption. These proposals often favor ${createWord("decentralization", "spreading out power/control", "spreading out")}—a more dispersed and rural society, with people growing more of their own food and generating more of their own power. This would give us an economy with greater ${createWord("resilience", "ability to recover quickly", "toughness")} than our current highly connected one.
+            </div>
+            <div class="mb-4">
+                <span class="font-bold text-slate-400 mr-2">10</span>
+                What’s the problem with highly integrated systems? They’re efficient and low cost, but brittle. Ours brings us fruit from South America and computer parts from China but leaves us in the lurch if anything interrupts trade. We’re so connected that a single power outage or oil shortage affects millions. Sicknesses can more easily become epidemics. The American housing collapse of 2008 quickly brought on a worldwide recession.
+            </div>
+            <div class="mb-4">
+                <span class="font-bold text-slate-400 mr-2">11</span>
+                Life used to be much more decentralized. The Transition movement, beginning in Britain, guides communities toward a lower energy, more self-sufficient future, with hundreds of branches active in the United States and elsewhere. The Slow Food movement, back-to-the-landers reviving rural skills, and those pursuing voluntary simplicity are pointed in the same direction.
+            </div>
+            <div class="mb-4">
+                <span class="font-bold text-slate-400 mr-2">12</span>
+                What might a major lifestyle downshift feel like? Real-world Americans experienced a downshift during World War II. The U.S. auto industry stopped making cars and switched to building tanks and planes. Gasoline, milk, meat, coffee, cheese, sugar, heating oil, and shoes were strictly ${createWord("rationed", "limited to a fixed amount", "restricted")}. Could we do it again?
+            </div>
+            <div class="mb-4">
+                <span class="font-bold text-slate-400 mr-2">13</span>
+                Adaptability is one of humankind’s hallmarks. We evolved during difficult climatic times, when temperatures swung between ice ages and warmer interglacial periods, times so challenging that the twenty or so other strains of humans who weren’t as flexible all died out. Is that ability to adapt still within us?
+            </div>
+            <div class="mb-4">
+                <span class="font-bold text-slate-400 mr-2">14</span>
+                Consider a power outage’s frustrations, then the gradual adaptation the longer it goes on until dining by lantern light feels almost normal. Use of mass transit goes up when gas prices rise. We adjust to water rationing. When a job is lost in the family, we cut budgets. People think they can’t go backward, then find out that they can. We ended up succeeding in getting rid of slavery, after all. Stranger still to a time-traveling slave owner: we no longer even notice its absence.
+            </div>
+        `;
+
         // 1. VOCABULARY TAB
-        const VocabularyTab = ({ activeTab }) => {
+        const VocabularyTab = ({ vocabMatches, setVocabMatches, onDownload }) => {
             const [selectedWord, setSelectedWord] = useState(null);
             const [selectedDef, setSelectedDef] = useState(null);
-            const [matches, setMatches] = useState({});
             const [wrong, setWrong] = useState(false);
 
             const handleWordClick = (word) => {
-                if (matches[word]) return;
+                if (vocabMatches[word]) return;
                 setSelectedWord(word);
                 setWrong(false);
                 checkMatch(word, selectedDef);
             };
 
             const handleDefClick = (defWord) => {
-                if (matches[defWord]) return;
+                if (vocabMatches[defWord]) return;
                 setSelectedDef(defWord);
                 setWrong(false);
                 checkMatch(selectedWord, defWord);
@@ -288,7 +351,7 @@
             const checkMatch = (w, d) => {
                 if (w && d) {
                     if (w === d) {
-                        setMatches(prev => ({ ...prev, [w]: true }));
+                        setVocabMatches(prev => ({ ...prev, [w]: true }));
                         setSelectedWord(null);
                         setSelectedDef(null);
                     } else {
@@ -335,18 +398,18 @@
 
                     <h2 className="text-2xl font-bold text-slate-800 mb-6 border-b pb-2">2. Match the Meaning</h2>
                     <p className="mb-4 text-slate-600">Tap a word (blue), then tap its definition (orange) to match them.</p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                         <div className="space-y-3">
                             {VOCAB_DATA.map((item) => (
                                 <button
                                     key={item.word}
                                     onClick={() => handleWordClick(item.word)}
                                     className={`w-full p-4 text-left rounded-lg border transition-all duration-200 
-                                        ${matches[item.word] ? 'bg-green-100 border-green-500 text-green-800 opacity-50 cursor-default' : 
+                                        ${vocabMatches[item.word] ? 'bg-green-100 border-green-500 text-green-800 opacity-50 cursor-default' : 
                                           selectedWord === item.word ? 'bg-blue-600 text-white border-blue-600 shadow-md transform scale-105' : 
                                           'bg-white border-slate-300 hover:border-blue-400 hover:bg-blue-50'}`}
                                 >
-                                    {item.word} {matches[item.word] && "✓"}
+                                    {item.word} {vocabMatches[item.word] && "✓"}
                                 </button>
                             ))}
                         </div>
@@ -356,15 +419,28 @@
                                     key={item.word}
                                     onClick={() => handleDefClick(item.word)}
                                     className={`w-full p-4 text-left rounded-lg border transition-all duration-200 text-sm
-                                        ${matches[item.word] ? 'bg-green-100 border-green-500 text-green-800 opacity-50 cursor-default' : 
+                                        ${vocabMatches[item.word] ? 'bg-green-100 border-green-500 text-green-800 opacity-50 cursor-default' : 
                                           selectedDef === item.word ? 'bg-orange-500 text-white border-orange-500 shadow-md transform scale-105' : 
                                           'bg-white border-slate-300 hover:border-orange-400 hover:bg-orange-50'}`}
                                 >
-                                    {item.def} {matches[item.word] && "✓"}
+                                    {item.def} {vocabMatches[item.word] && "✓"}
                                 </button>
                             ))}
                         </div>
                     </div>
+
+                    {/* Download Report Button for Vocabulary */}
+                    <div className="text-center border-t pt-8">
+                        <h3 className="text-lg font-bold text-slate-700 mb-2">Completed your work?</h3>
+                         <button 
+                            onClick={onDownload}
+                            className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform transition active:scale-95 inline-flex items-center gap-2"
+                        >
+                            Download Report
+                        </button>
+                         <p className="mt-2 text-xs text-slate-500">Includes progress from all tabs.</p>
+                    </div>
+
                     {wrong && (
                         <div className="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-6 py-2 rounded-full shadow-lg animate-fade-in z-50">
                             Try Again! Not a match.
@@ -374,58 +450,7 @@
             );
         };
 
-        // 2. READING TAB (Refactored for API Lookup + Highlighting)
-        const createWord = (text, def, synonym) => {
-            return `<span class="word-trigger" data-def="${def}" data-syn="${synonym}" data-word="${text}">${text}</span>`;
-        };
-
-        const READING_CONTENT_HTML = `
-            <div class="mb-4">
-                <span class="font-bold text-slate-400 mr-2">1</span>
-                Our dependence on fossil fuels didn’t arise from an evil plot but through our curiosity and ${createWord("ingenuity", "cleverness in solving problems", "creativity")}. Coal was seen only as a heat source until we found it could power steam engines. Later we discovered that the gas it gave off when heated could light homes and streets. Gasoline was considered a useless by-product of petroleum—and then came the internal ${createWord("combustion", "burning to create energy", "burning")} engine.
-            </div>
-            <div class="mb-4">
-                <span class="font-bold text-slate-400 mr-2">2</span>
-                Necessity is said to be the mother of invention, but the reverse is also true. We tinker and probe, then see if our discovery fills any need, including needs we didn’t know we had.
-            </div>
-            <div class="mb-4">
-                <span class="font-bold text-slate-400 mr-2">3</span>
-                With fossil fuels, new uses multiplied madly until we wove them into every corner of our lives. What used to be luxuries—garage-door openers, dishwashers, cell phones—came to feel like necessities. It’s easy to go up the lifestyle ladder but painful climbing down. This is important.
-            </div>
-            <div class="mb-4">
-                <span class="font-bold text-slate-400 mr-2">4</span>
-                It’s not hard to understand. The ${createWord("windfall", "unexpected large benefit", "lucky bonus")} of cheap fossil fuels that’s fueled the West for two centuries got us used to ever-rising living standards. Energy buys convenience. And convenience is addictive—highly so. Each increased dosage quickly becomes our new minimum requirement. You see this whenever gas prices rise and endanger our freedom to drive as much as we want.
-            </div>
-            <div class="mb-4">
-                <span class="font-bold text-slate-400 mr-2">5</span>
-                To escape from the environmental crunch, we don’t need to throw out our entire lifestyle but simply to power it on something other than fossil fuels. We’re on the way. Switching to renewables for electricity is probably the easy part. Harder will be getting oil out of transportation and agriculture and the military. Can we run this film in reverse?
-            </div>
-            <div class="mb-4">
-                <span class="font-bold text-slate-400 mr-2">6</span>
-                When our standard of living is threatened by ${createWord("scarcity", "not having enough resources", "shortage")} and side effects, you’d think we’d cut back. Instead, the common response is to maintain it at any cost. Bluefin tuna is in steep decline, but the tuna-loving Japanese are catching all they can. We know our freshwater ${createWord("aquifers", "underground water sources", "groundwater")} are limited, but we’re draining them faster rather than slower.
-            </div>
-            <div class="mb-4">
-                <span class="font-bold text-slate-400 mr-2">7</span>
-                Developing countries feel the same. People getting their first paved roads, safe water, electric lights, and refrigerators don’t want to march backward any more than the West does.
-            </div>
-            <div class="mb-4">
-                <span class="font-bold text-slate-400 mr-2">8</span>
-                Using less energy and consuming less—taking a step down the ladder—would make the West’s transition to renewables that much easier. The call “Never retreat” comes from us both as consumers and breadwinners.
-            </div>
-            <div class="mb-4">
-                <span class="font-bold text-slate-400 mr-2">9</span>
-                Many have sketched a sustainable economy that doesn’t rest on unnecessary consumption. These proposals often favor ${createWord("decentralization", "spreading out power/control", "spreading out")}—a more dispersed and rural society. This would give us an economy with greater ${createWord("resilience", "ability to recover quickly", "toughness")} than our current highly connected one.
-            </div>
-            <div class="mb-4">
-                <span class="font-bold text-slate-400 mr-2">12</span>
-                What might a major lifestyle downshift feel like? Real-world Americans experienced a downshift during World War II. Gasoline, milk, meat, coffee, cheese, sugar, heating oil, and shoes were strictly ${createWord("rationed", "limited to a fixed amount", "restricted")}. Could we do it again?
-            </div>
-             <div class="mb-4">
-                <span class="font-bold text-slate-400 mr-2">13</span>
-                Adaptability is one of humankind’s hallmarks. We evolved during difficult climatic times. Is that ability to adapt still within us?
-            </div>
-        `;
-
+        // 2. READING TAB 
         const ReadingTab = () => {
             const [highlightMode, setHighlightMode] = useState(false);
             const [popup, setPopup] = useState(null); 
@@ -597,18 +622,170 @@
         };
 
         // 3. EXERCISES TAB & CANVAS LOGIC
-        const ExercisesTab = () => {
-            const [student, setStudent] = useState({ fname: "", lname: "" });
-            const [answers, setAnswers] = useState({});
-            const [submitting, setSubmitting] = useState(false);
-
+        const ExercisesTab = ({ student, setStudent, answers, setAnswers, onDownload }) => {
             const handleChange = (qId, val) => {
                 setAnswers(prev => ({ ...prev, [qId]: val }));
             };
 
-            const downloadReport = async () => {
+            return (
+                <div className="pb-24 h-full flex flex-col lg:flex-row gap-6">
+                    {/* Left Column: Reading Reference */}
+                    <div className="lg:w-1/2 flex flex-col h-full lg:overflow-hidden">
+                        <div className="bg-white p-4 rounded-lg shadow border border-slate-200 flex-1 lg:overflow-y-auto">
+                            <h3 className="font-bold text-slate-500 uppercase text-xs mb-3 tracking-wide sticky top-0 bg-white pb-2 border-b">Reference Text</h3>
+                            <div 
+                                className="text-sm leading-relaxed text-slate-700"
+                                dangerouslySetInnerHTML={{ __html: READING_CONTENT_HTML }}
+                            ></div>
+                        </div>
+                    </div>
+
+                    {/* Right Column: Questions */}
+                    <div className="lg:w-1/2 flex flex-col h-full lg:overflow-hidden">
+                         <div className="flex-1 lg:overflow-y-auto pr-2">
+                            {/* Student Info */}
+                            <div className="bg-blue-50 border border-blue-200 p-6 rounded-lg mb-8">
+                                <h3 className="font-bold text-blue-800 mb-4">Student Identification</h3>
+                                <div className="flex gap-4">
+                                    <div className="flex-1">
+                                        <label className="block text-sm text-blue-900 mb-1">First Name</label>
+                                        <input 
+                                            type="text" 
+                                            className="w-full p-2 border rounded"
+                                            value={student.fname}
+                                            onChange={(e) => setStudent({...student, fname: e.target.value})}
+                                        />
+                                    </div>
+                                    <div className="flex-1">
+                                        <label className="block text-sm text-blue-900 mb-1">Last Name</label>
+                                        <input 
+                                            type="text" 
+                                            className="w-full p-2 border rounded"
+                                            value={student.lname}
+                                            onChange={(e) => setStudent({...student, lname: e.target.value})}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="space-y-8">
+                                {QUIZ_QUESTIONS.map((q, idx) => (
+                                    <div key={q.id} className="bg-white p-6 rounded-lg shadow border border-slate-200">
+                                        <span className="text-xs font-bold text-slate-400 uppercase">Question {idx + 1}</span>
+                                        <p className="font-bold text-slate-800 text-lg mb-4">{q.text}</p>
+                                        
+                                        {q.type === 'mcq' && (
+                                            <div className="space-y-2">
+                                                {q.options.map(opt => (
+                                                    <label key={opt.id} className="flex items-start gap-3 p-3 rounded hover:bg-slate-50 border border-transparent hover:border-slate-200 cursor-pointer">
+                                                        <input 
+                                                            type="radio" 
+                                                            name={q.id} 
+                                                            value={opt.id}
+                                                            checked={answers[q.id] === opt.id}
+                                                            onChange={() => handleChange(q.id, opt.id)}
+                                                            className="mt-1"
+                                                        />
+                                                        <span className="text-slate-700">{opt.text}</span>
+                                                    </label>
+                                                ))}
+                                            </div>
+                                        )}
+                                        
+                                        {q.type === 'checkbox' && (
+                                            <div className="space-y-2">
+                                                {q.options.map(opt => (
+                                                    <label key={opt.id} className="flex items-start gap-3 p-3 rounded hover:bg-slate-50 border border-transparent hover:border-slate-200 cursor-pointer">
+                                                        <input 
+                                                            type="checkbox" 
+                                                            name={q.id} 
+                                                            value={opt.id}
+                                                            checked={(answers[q.id] || []).includes(opt.id)}
+                                                            onChange={(e) => {
+                                                                const current = answers[q.id] || [];
+                                                                let next;
+                                                                if (e.target.checked) next = [...current, opt.id];
+                                                                else next = current.filter(x => x !== opt.id);
+                                                                handleChange(q.id, next);
+                                                            }}
+                                                            className="mt-1"
+                                                        />
+                                                        <span className="text-slate-700">{opt.text}</span>
+                                                    </label>
+                                                ))}
+                                                <p className="text-xs text-slate-500 mt-2 font-semibold">Please select {q.correct.length} options.</p>
+                                            </div>
+                                        )}
+
+                                        {q.type === 'text' && (
+                                            <textarea 
+                                                className="w-full border rounded p-3 text-slate-700 h-32 focus:ring-2 focus:ring-blue-500 outline-none"
+                                                placeholder="Type your answer here..."
+                                                value={answers[q.id] || ""}
+                                                onChange={(e) => handleChange(q.id, e.target.value)}
+                                            ></textarea>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="mt-12 pb-8 text-center">
+                                <button 
+                                    onClick={onDownload}
+                                    className="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg shadow-lg transform transition active:scale-95 flex items-center justify-center gap-2 mx-auto"
+                                >
+                                    Download Report Image
+                                </button>
+                                <p className="mt-4 text-sm text-slate-500">
+                                    Check all answers before downloading. A PNG image will be saved to your device.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- MAIN APP SHELL ---
+
+        const App = () => {
+            const [activeTab, setActiveTab] = useState('vocabulary');
+            const [cheating, setCheating] = useState(false);
+            
+            // Shared State
+            const [student, setStudent] = useState({ fname: "", lname: "" });
+            const [vocabMatches, setVocabMatches] = useState({});
+            const [quizAnswers, setQuizAnswers] = useState({});
+            const [submitting, setSubmitting] = useState(false);
+
+            useEffect(() => {
+                const handleVisibilityChange = () => {
+                    if (document.hidden) {
+                        setCheating(true);
+                    }
+                };
+
+                const preventDefault = (e) => e.preventDefault();
+
+                document.addEventListener("visibilitychange", handleVisibilityChange);
+                document.addEventListener("contextmenu", preventDefault);
+                document.addEventListener("copy", preventDefault);
+                document.addEventListener("paste", preventDefault);
+                document.addEventListener("cut", preventDefault);
+
+                return () => {
+                    document.removeEventListener("visibilitychange", handleVisibilityChange);
+                    document.removeEventListener("contextmenu", preventDefault);
+                    document.removeEventListener("copy", preventDefault);
+                    document.removeEventListener("paste", preventDefault);
+                    document.removeEventListener("cut", preventDefault);
+                };
+            }, []);
+
+            const generateReport = async () => {
                 if(!student.fname || !student.lname) {
-                    alert("Please enter your name first.");
+                    alert("Please go to Tab 3 (Exercises) and enter your Name first.");
+                    setActiveTab('exercises');
                     return;
                 }
                 
@@ -618,7 +795,7 @@
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
                 const width = 800;
-                let height = 300 + (QUIZ_QUESTIONS.length * 350); 
+                let height = 400 + (QUIZ_QUESTIONS.length * 350); 
                 canvas.width = width;
                 canvas.height = height;
 
@@ -628,7 +805,7 @@
 
                 // Header
                 ctx.fillStyle = "#1e293b"; // Slate-800
-                ctx.fillRect(0, 0, width, 120);
+                ctx.fillRect(0, 0, width, 140);
                 
                 ctx.fillStyle = "#ffffff";
                 ctx.font = "bold 32px Arial";
@@ -641,8 +818,15 @@
                 ctx.fillText(date, width - 40, 90);
                 ctx.textAlign = "left";
 
+                // Vocabulary Score Section
+                const vocabScore = Object.keys(vocabMatches).length;
+                const vocabTotal = VOCAB_DATA.length;
+                ctx.font = "16px Arial";
+                ctx.fillStyle = "#94a3b8"; // Slate-400
+                ctx.fillText(`Vocabulary Practice: ${vocabScore}/${vocabTotal} matches completed`, 40, 125);
+
                 // Content Loop
-                let y = 160;
+                let y = 180;
                 
                 const wrapText = (text, x, y, maxWidth, lineHeight) => {
                     const words = text.split(' ');
@@ -664,7 +848,7 @@
                 }
 
                 QUIZ_QUESTIONS.forEach((q, index) => {
-                    const studentAnsRaw = answers[q.id];
+                    const studentAnsRaw = quizAnswers[q.id];
                     let studentAns = "No Answer";
                     let isCorrect = false;
 
@@ -732,139 +916,6 @@
             };
 
             return (
-                <div className="max-w-3xl mx-auto pb-24">
-                    <div className="bg-blue-50 border border-blue-200 p-6 rounded-lg mb-8">
-                        <h3 className="font-bold text-blue-800 mb-4">Student Identification</h3>
-                        <div className="flex gap-4">
-                            <div className="flex-1">
-                                <label className="block text-sm text-blue-900 mb-1">First Name</label>
-                                <input 
-                                    type="text" 
-                                    className="w-full p-2 border rounded"
-                                    value={student.fname}
-                                    onChange={(e) => setStudent({...student, fname: e.target.value})}
-                                />
-                            </div>
-                            <div className="flex-1">
-                                <label className="block text-sm text-blue-900 mb-1">Last Name</label>
-                                <input 
-                                    type="text" 
-                                    className="w-full p-2 border rounded"
-                                    value={student.lname}
-                                    onChange={(e) => setStudent({...student, lname: e.target.value})}
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="space-y-8">
-                        {QUIZ_QUESTIONS.map((q, idx) => (
-                            <div key={q.id} className="bg-white p-6 rounded-lg shadow border border-slate-200">
-                                <span className="text-xs font-bold text-slate-400 uppercase">Question {idx + 1}</span>
-                                <p className="font-bold text-slate-800 text-lg mb-4">{q.text}</p>
-                                
-                                {q.type === 'mcq' && (
-                                    <div className="space-y-2">
-                                        {q.options.map(opt => (
-                                            <label key={opt.id} className="flex items-start gap-3 p-3 rounded hover:bg-slate-50 border border-transparent hover:border-slate-200 cursor-pointer">
-                                                <input 
-                                                    type="radio" 
-                                                    name={q.id} 
-                                                    value={opt.id}
-                                                    checked={answers[q.id] === opt.id}
-                                                    onChange={() => handleChange(q.id, opt.id)}
-                                                    className="mt-1"
-                                                />
-                                                <span className="text-slate-700">{opt.text}</span>
-                                            </label>
-                                        ))}
-                                    </div>
-                                )}
-                                
-                                {q.type === 'checkbox' && (
-                                    <div className="space-y-2">
-                                        {q.options.map(opt => (
-                                            <label key={opt.id} className="flex items-start gap-3 p-3 rounded hover:bg-slate-50 border border-transparent hover:border-slate-200 cursor-pointer">
-                                                <input 
-                                                    type="checkbox" 
-                                                    name={q.id} 
-                                                    value={opt.id}
-                                                    checked={(answers[q.id] || []).includes(opt.id)}
-                                                    onChange={(e) => {
-                                                        const current = answers[q.id] || [];
-                                                        let next;
-                                                        if (e.target.checked) next = [...current, opt.id];
-                                                        else next = current.filter(x => x !== opt.id);
-                                                        handleChange(q.id, next);
-                                                    }}
-                                                    className="mt-1"
-                                                />
-                                                <span className="text-slate-700">{opt.text}</span>
-                                            </label>
-                                        ))}
-                                        <p className="text-xs text-slate-500 mt-2 font-semibold">Please select {q.correct.length} options.</p>
-                                    </div>
-                                )}
-
-                                {q.type === 'text' && (
-                                    <textarea 
-                                        className="w-full border rounded p-3 text-slate-700 h-32 focus:ring-2 focus:ring-blue-500 outline-none"
-                                        placeholder="Type your answer here..."
-                                        value={answers[q.id] || ""}
-                                        onChange={(e) => handleChange(q.id, e.target.value)}
-                                    ></textarea>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="mt-12 text-center">
-                        <button 
-                            onClick={downloadReport}
-                            disabled={submitting}
-                            className="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg shadow-lg transform transition active:scale-95 flex items-center justify-center gap-2 mx-auto"
-                        >
-                            {submitting ? "Generating..." : "Download Report Image"}
-                        </button>
-                        <p className="mt-4 text-sm text-slate-500">
-                            Check all answers before downloading. A PNG image will be saved to your device.
-                        </p>
-                    </div>
-                </div>
-            );
-        };
-
-        // --- MAIN APP SHELL ---
-
-        const App = () => {
-            const [activeTab, setActiveTab] = useState('vocabulary');
-            const [cheating, setCheating] = useState(false);
-
-            useEffect(() => {
-                const handleVisibilityChange = () => {
-                    if (document.hidden) {
-                        setCheating(true);
-                    }
-                };
-
-                const preventDefault = (e) => e.preventDefault();
-
-                document.addEventListener("visibilitychange", handleVisibilityChange);
-                document.addEventListener("contextmenu", preventDefault);
-                document.addEventListener("copy", preventDefault);
-                document.addEventListener("paste", preventDefault);
-                document.addEventListener("cut", preventDefault);
-
-                return () => {
-                    document.removeEventListener("visibilitychange", handleVisibilityChange);
-                    document.removeEventListener("contextmenu", preventDefault);
-                    document.removeEventListener("copy", preventDefault);
-                    document.removeEventListener("paste", preventDefault);
-                    document.removeEventListener("cut", preventDefault);
-                };
-            }, []);
-
-            return (
                 <div className="h-full flex flex-col bg-slate-100">
                     <header className="bg-slate-900 text-white p-4 shadow-md z-10">
                         <div className="max-w-5xl mx-auto flex items-center justify-between">
@@ -901,9 +952,23 @@
 
                     <main className="flex-1 overflow-y-auto p-4 md:p-8">
                         <div className="max-w-5xl mx-auto h-full">
-                            {activeTab === 'vocabulary' && <VocabularyTab />}
+                            {activeTab === 'vocabulary' && (
+                                <VocabularyTab 
+                                    vocabMatches={vocabMatches} 
+                                    setVocabMatches={setVocabMatches} 
+                                    onDownload={generateReport}
+                                />
+                            )}
                             {activeTab === 'reading' && <ReadingTab />}
-                            {activeTab === 'exercises' && <ExercisesTab />}
+                            {activeTab === 'exercises' && (
+                                <ExercisesTab 
+                                    student={student}
+                                    setStudent={setStudent}
+                                    answers={quizAnswers}
+                                    setAnswers={setQuizAnswers}
+                                    onDownload={generateReport}
+                                />
+                            )}
                         </div>
                     </main>
 
